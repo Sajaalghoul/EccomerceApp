@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ecommerce APP</title>
+    <link rel="stylesheet" href="../index.css" />
+    <link rel="stylesheet" href="customer.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      integrity="sha512-Xy8+xF5Z04p6RfqM0w4RUIgoxHF6n1EJ/MmO5AoC7+U6QuYo0xlxok8JbSv9I9sYQklXKrjQ5KVD65HsO1fdxg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <script
+      src="https://kit.fontawesome.com/2a8b90a045.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div calss="container">
+      <header role="banner">
+        <nav class="sticky navBar">
+          <ul class="flex navBar__ul">
+            <li class="ul__logo">EazyShop</li>
+            <div class="ul__items">
+              <li>
+                <a class="items__link" href="#productsList" id="home">Home</a>
+              </li>
+              <li>
+                <a class="items__link" href="#customersCart" id="cartButton"
+                  ><i class="fas fa-shopping-cart"></i
+                ></a>
+              </li>
+            </div>
+            <div class="flex ul__search-icon">
+              <input
+                type="search"
+                id="searchInput"
+                class="search-icon__input"
+                placeholder="Search"
+              />
+              <label class="search-icon__icon" id="search">
+                <span class="icon__search"
+                  ><i class="fa fa-search" style="color: rgb(59, 88, 158)"></i>
+                </span>
+              </label>
+            </div>
+            <p id="temp"></p>
+          </ul>
+        </nav>
+      </header>
+      <main role="main" class="main">
+        <section class="flex main__display" id="productsDispaly">
+          <header role="header" class="flex display__header">
+            <select class="header__filter" id="filterCateogry">
+              <option value="allCategories">allCategories</option>
+              <option value="Sport">Sport</option>
+              <option value="Clothes">Clothes</option>
+              <option value="Electronics">Electronics</option>
+            </select>
+            <select class="header__filter" id="filterPrice">
+              <option value="allPrices">allPrices</option>
+              <option value="low">1_2000</option>
+              <option value="moderate">2000_10000</option>
+              <option value="high">more than 10000</option>
+            </select>
+            <select class="header__display" id="displaySelect">
+              <option value="grid">grid</option>
+              <option value="list">list</option>
+            </select>
+          </header>
+          <section class="flex main__products" id="customersProduct"></section>
+        </section>
+        <section class="main__cart" id="cartContainer">
+          <p class="cart__title">Cart</p>
+          <p class="cart__price" id="price"></p>
+          <section class="flex cart__block" id="customersCart"></section>
+          <button class="cart__button" id="cartIndisplay">
+            Back to shopping!!
+          </button>
+        </section>
+      </main>
+      <footer role="contentinfo" class="flex body__footer">
+        <p class="footer__info">&copy; 2023 Eazy Shopping</p>
+      </footer>
+    </div>
+    <script type="module" src="customer.js"></script>
+  </body>
+</html>

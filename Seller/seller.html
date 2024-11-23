@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Seller Page</title>
+    <link rel="stylesheet" href="../index.css" />
+    <link rel="stylesheet" href="seller.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      integrity="sha512-Xy8+xF5Z04p6RfqM0w4RUIgoxHF6n1EJ/MmO5AoC7+U6QuYo0xlxok8JbSv9I9sYQklXKrjQ5KVD65HsO1fdxg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <script
+      src="https://kit.fontawesome.com/2a8b90a045.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div class="container">
+      <header role="banner">
+        <nav class="sticky navBar">
+          <ul class="flex navBar__ul">
+            <li class="ul__logo">EazyShop</li>
+            <div class="ul__items">
+              <li>
+                <a class="items__link" href="#productsList" id="home">Home</a>
+              </li>
+              <li>
+                <a class="items__link" href="#addForm" id="addDisplay"
+                  >AddProduct</a
+                >
+              </li>
+            </div>
+            <div class="flex ul__search-icon">
+              <input
+                type="search"
+                id="searchInput"
+                class="search-icon__input"
+                placeholder="Search"
+              />
+              <label class="search-icon__icon" id="search">
+                <span class="icon__search"
+                  ><i class="fa fa-search" style="color: rgb(59, 88, 158)"></i>
+                </span>
+              </label>
+            </div>
+          </ul>
+        </nav>
+      </header>
+      <main role="main" class="main">
+        <section class="flex main__products" id="productsList"></section>
+        <form class="flex form" id="addForm">
+          <label class="form__label" for="name">Product Name:</label>
+          <input
+            id="name"
+            type="text"
+            class="form__input"
+            placeholder="Enter Product name:"
+            required
+          />
+          <label class="form__label" for="detail">Product detail:</label>
+          <input
+            id="detail"
+            type="text"
+            class="form__input"
+            placeholder="Enter Product details:"
+            required
+          />
+          <label class="form__label" for="price">Product price:</label>
+          <input
+            id="price"
+            type="number"
+            min="1"
+            class="form__input"
+            placeholder="Enter Product Price:"
+            required
+          />
+          <label class="form__label" for="image">Product Image:</label>
+          <input
+            id="image"
+            type="url"
+            class="form__input"
+            placeholder="Enter Product Image link:"
+            required
+          />
+          <label class="form__label" for="category">Product Category:</label>
+          <select class="form__input" id="category">
+            <option value="Sport">Sport</option>
+            <option value="Clothes">Clothes</option>
+            <option value="Electronics">Electronics</option>
+          </select>
+          <button type="submit" class="form__submit">Add Product</button>
+        </form>
+        <form class="flex form" id="editForm">
+          <label class="form__label" for="nameEdit">Product Name:</label>
+          <input
+            id="nameEdit"
+            type="text"
+            class="form__input"
+            placeholder="Enter Product name:"
+            required
+          />
+          <label class="form__label" for="detailEdit">Product detail:</label>
+          <input
+            id="detailEdit"
+            type="text"
+            class="form__input"
+            placeholder="Enter Product details:"
+            required
+          />
+          <label class="form__label" for="priceEdit">Product price:</label>
+          <input
+            id="priceEdit"
+            type="number"
+            min="1"
+            class="form__input"
+            placeholder="Enter Product Price:"
+            required
+          />
+          <label class="form__label" for="imageEdit">Product Image:</label>
+          <input
+            id="imageEdit"
+            type="url"
+            class="form__input"
+            placeholder="Enter Product Image link:"
+            required
+          />
+          <label class="form__label" for="categoryEdit"
+            >Product Category:</label
+          >
+          <select id="categoryEdit" class="form__input">
+            <option value="sport">Sport</option>
+            <option value="clothes">Clothes</option>
+            <option value="electronics">Electronics</option>
+          </select>
+          <button type="submit" class="form__submit">Edit Product</button>
+        </form>
+        <div id="toastBox"></div>
+      </main>
+      <footer role="contentinfo" class="flex body__footer">
+        <p class="footer__info">&copy; 2023 Eazy Shopping</p>
+      </footer>
+    </div>
+    <script type="module" src="seller.js"></script>
+  </body>
+</html>

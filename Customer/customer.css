@@ -1,0 +1,152 @@
+/*  */
+.display__header {
+  gap: 1rem;
+  justify-content: flex-end;
+  padding-top: 20px;
+  padding-right: 50px;
+}
+.header__filter {
+  cursor: pointer;
+  width: 200px;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  background-color: #cccccc51;
+  border-radius: 5px;
+}
+.header__display {
+  cursor: pointer;
+  width: 100px;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+/*  */
+.nav__cart {
+  width: 35px;
+  margin-right: 0;
+}
+.main__display {
+  /* background-color: rgb(59, 88, 158, 0.7); */
+  flex-direction: column;
+}
+
+.list {
+  flex-direction: column;
+  padding: 50px;
+  gap: 20px;
+}
+
+.product__cartAdd {
+  padding: 10px 20px;
+  margin: 5px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  color: white;
+  background-color: rgb(59, 88, 158);
+  width: 150px;
+  visibility: hidden;
+  bottom: 2px;
+  transition: all 0.3s ease-in-out;
+}
+.product__cartAdd:hover {
+  transform: scale(1.1);
+  cursor: pointer;
+}
+.products__product:hover .product__cartAdd {
+  visibility: visible;
+}
+
+/* products to here */
+/* cart */
+.main__cart {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgb(59, 88, 158);
+  margin: 100px;
+  padding: 20px;
+}
+.cart__title {
+  font-weight: bold;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  font-size: 40px;
+  margin-bottom: 0px;
+  color: #3b589e;
+}
+.cart__price {
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  font-size: 30px;
+}
+.cart__block {
+  flex-direction: column;
+  gap: 2rem;
+}
+.list__listProduct {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 0 10px;
+  padding: 20px;
+  justify-content: center;
+  gap: 10rem;
+  background-color: white;
+}
+.list__listProduct--margin {
+  margin: 10px 200px;
+}
+.listProduct__details {
+  width: 500px;
+}
+
+.listProduct__img {
+  max-width: 100px;
+  display: block;
+  margin-bottom: 10px;
+  padding: 30px;
+  height: auto;
+  padding-left: 0px;
+}
+
+.listProduct__button {
+  background-color: rgb(59, 88, 158);
+  color: white;
+  border: none;
+  padding: 20px 40px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: all 0.3s ease-in-out;
+  height: 50%;
+  margin-top: 100px;
+  margin-right: 20px;
+}
+.listProduct__button:hover {
+  transform: scale(1.1);
+  cursor: pointer;
+}
+
+.listProduct__delete:hover {
+  transform: scale(1.2);
+}
+.cart__button {
+  background-color: rgb(59, 88, 158);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 20px;
+  transition: all 0.3s ease-in-out;
+}
+
+.cart__button:hover {
+  transform: scale(1.2);
+}
+
+/*  */
+.listProduct__button {
+  margin-right: 0px;
+}
