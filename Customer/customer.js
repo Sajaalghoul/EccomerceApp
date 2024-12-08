@@ -1,4 +1,5 @@
-//constants
+// Constants
+const homeButton = document.getElementById("homeButton");
 const customersProduct = document.getElementById("customersProduct");
 const productsDispaly = document.getElementById("productsDispaly");
 const searchInput = document.getElementById("searchInput");
@@ -8,116 +9,129 @@ const cartContainer = document.getElementById("cartContainer");
 const customersCart = document.getElementById("customersCart");
 const cartButton = document.getElementById("cartButton");
 const cartIndisplay = document.getElementById("cartIndisplay");
-const displaySelect = document.getElementById("displaySelect");
 
-///vars
+// Variables
 let products = [];
 let cartProducts = [];
 let cateogriesDisplayed;
 let pricesDisplayed;
 
-///display product
+// Back to shopping or Home button functionality
+homeButton.addEventListener("click", () => {
+  cartContainer.style.display = "none";
+  displayCustomerProducts(getProducts());
+  productsDispaly.style.display = "flex";
+});
+
+// Fetch and display products
 function getProducts() {
-  products = JSON.parse(localStorage.getItem("Myproducts"));
+  products = JSON.parse(localStorage.getItem("Myproducts")) || [];
   return products;
 }
-getProducts();
-///
-if (home) {
-  home.addEventListener("click", () => {
-    productsDispaly.style.display = "flex";
-    cartContainer.style.display = "none";
-  });
-}
-if (cartContainer) {
-}
-///////////////
-//displaySelect
-function display(productsToDisplay) {
-  customersProduct.innerHTML = "";
-  if (displaySelect.value == "grid") {
-    customersProduct.className = "flex main__products";
-    displayCustomerProducts(productsToDisplay);
-  } else {
-    customersProduct.className += " list";
-    displayProductsAsList(productsToDisplay);
-  }
-}
-displaySelect.addEventListener("click", () => {
-  const filteredProducts = performIntersection(
-    finalCateogry(filterCateogry),
-    finalPrice(filterPrice)
-  );
-  searchInput.value = "";
-  display(filteredProducts);
-});
-function displayCustomerProducts(products) {
-  products.forEach((product) => {
-    customersProduct.innerHTML += `  
-    <div class="flex products__product" product-id="${product.id}">
-      <div class="product__imgBox">
-        <img src="${product.image}" alt="productImage" class="imgBox__img" />
-      </div>
-      <div class="flex products__upper" id="cartButton">
-          <button class="buttons__cart" >
-           <i class="fas fa-cart-plus"></i>
+
+function displayCustomerProducts(productsToDisplay) {
+  customersProduct.innerHTML = ""; // Clear the container
+  const cartProductIds = cartProducts.map((product) => product.id); // Get IDs of products in the cart
+
+  productsToDisplay.forEach((product) => {
+    const isDisabled = cartProductIds.includes(product.id) ? "disabled" : "";
+    customersProduct.innerHTML += `
+      <div class="flex products__product" product-id="${product.id}">
+        <div class="product__imgBox">
+          <img src="${product.image}" alt="productImage" class="imgBox__img" />
+        </div>
+        <div class="flex products__upper">
+          <button class="buttons__cart" ${isDisabled}>
+            <i class="fas fa-cart-plus"></i>
           </button>
-        <div class="upper__price">${product.price} $</div>
-      </div>
-      <div class="product__details">
-        <h2 class="details__name">${product.name}</h2>
-        <p class="details__cateogry">${product.category}</p>
-        <div class="product__detail">${product.detail}</div>
-      </div>
-    </div>`;
+          <div class="upper__price">${product.price} $</div>
+        </div>
+        <div class="product__details">
+          <h2 class="details__name">${product.name}</h2>
+          <p class="details__cateogry">${product.category}</p>
+          <div class="product__detail">${product.detail}</div>
+        </div>
+      </div>`;
   });
+
+  // Add event listeners after rendering the products
   cartEventLinstener(".products__product");
 }
-displayCustomerProducts(products);
 
-function displayProductsAsList(products) {
-  products.forEach((product) => {
-    customersProduct.innerHTML += `
-    <div class="flex list__listProduct list__listProduct--margin" product-id=${product.id}>
-    <img src=${product.image} alt="productImage" class="listProduct__img">
-    <div class="listProduct__details">
-    <p class="details__name">${product.name}</p>
-    <p class="details__price">${product.price} $</p>
-    <p class="details__cateogry">${product.category}</p>
-    <p class="details__detail">${product.detail}</p>
-    </div>
-      <button class="listProduct__button addToCart">Add to cart</button>
-  
-</div>`;
-  });
-  cartEventLinstener(".list__listProduct");
+// Initialize the page by displaying all products
+function initializeProducts() {
+  const productsToDisplay = getProducts();
+  displayCustomerProducts(productsToDisplay);
+  getfromLocalStorage(); // Ensure cart is loaded
 }
 
-//search
+// Search functionality
 if (searchInput) {
-  searchInput.addEventListener("input", searchProduct);
+  searchInput.addEventListener("input", (searchEntry) => {
+    const filteredProducts = performIntersection(
+      finalCateogry(filterCateogry),
+      finalPrice(filterPrice)
+    );
+    const productDisplayed = searchResult(searchEntry.target, filteredProducts);
+    displayCustomerProducts(productDisplayed);
+  });
 }
 
-// search function
-function searchProduct(searchEntry) {
-  const productsToSearch = performIntersection(
+function searchResult(searchEntry, productsToSearch) {
+  return productsToSearch.filter((product) =>
+    product.name.toLowerCase().includes(searchEntry.value?.toLowerCase())
+  );
+}
+
+// Intersection of filters
+function performIntersection(
+  cateogries = getProducts(),
+  prices = getProducts()
+) {
+  return cateogries.filter((cateogryElement) =>
+    prices.some((priceElement) => priceElement.id === cateogryElement.id)
+  );
+}
+
+// Filter by category
+filterCateogry.addEventListener("click", () => {
+  const productsToDisplay = performIntersection(
     finalCateogry(filterCateogry),
     finalPrice(filterPrice)
   );
-  customersProduct.innerHTML = " ";
-  const productDisplayed = searchResult(searchEntry.target, productsToSearch);
-  display(productDisplayed);
-}
-//search result
-function searchResult(searchEntry, productsToSearch) {
-  return productsToSearch.filter((product) => {
-    return product.name
-      .toLowerCase()
-      .includes(searchEntry.value?.toLowerCase());
+  displayCustomerProducts(productsToDisplay);
+});
+
+function finalCateogry(cateogry) {
+  cateogriesDisplayed = products.filter((product) => {
+    if (cateogry.value === "allCategories") return true;
+    return product.category.toLowerCase() === cateogry.value.toLowerCase();
   });
+  return cateogriesDisplayed;
 }
-// // ///cart
-// // /////////cart eventlistener function
+
+// Filter by price
+filterPrice.addEventListener("change", () => {
+  const productsToDisplay = performIntersection(
+    finalCateogry(filterCateogry),
+    finalPrice(filterPrice)
+  );
+  displayCustomerProducts(productsToDisplay);
+});
+
+function finalPrice(price) {
+  pricesDisplayed = products.filter((product) => {
+    if (price.value === "allPrices") return true;
+    if (price.value == "low")
+      return product.price >= 1 && product.price <= 2000;
+    if (price.value == "moderate")
+      return product.price > 2000 && product.price <= 10000;
+    return product.price > 10000;
+  });
+  return pricesDisplayed;
+}
+
+// Cart functionality
 function cartEventLinstener(containerName) {
   getfromLocalStorage();
   const productContainer = document.querySelectorAll(containerName);
@@ -132,58 +146,57 @@ function cartEventLinstener(containerName) {
     });
   });
 }
-// // ////addtoLocalStorageFunction
+
+// Ensure cart data persists across page reloads
+function addToCart(productId) {
+  getfromLocalStorage();
+  const product = getProducts().find((product) => product.id == productId);
+  if (product) {
+    cartProducts.push(product);
+    addToLocalStorage();
+    if (cartContainer.style.display == "flex") {
+      displayCartProducts(cartProducts);
+    }
+  }
+}
+
 function addToLocalStorage() {
   window.localStorage.setItem("cart", JSON.stringify(cartProducts));
 }
 
-// // ///getfromLocalStorage
 function getfromLocalStorage() {
-  if (localStorage.getItem("cart")) {
-    cartProducts = JSON.parse(localStorage.getItem("cart"));
-  }
+  cartProducts = JSON.parse(localStorage.getItem("cart")) || [];
   return cartProducts;
 }
-getfromLocalStorage();
 
-/////add to cart
-function addToCart(productId) {
-  getfromLocalStorage();
-  const product = getProducts().find((product) => product.id == productId);
-  cartProducts.push(product);
-  addToLocalStorage();
-  if (cartContainer.style.display == "flex") {
-    displayCartProducts(cartProducts);
-  }
-}
-//////////display what in cart
+// Display cart products
 cartButton.addEventListener("click", () => {
   displayCartProducts(getfromLocalStorage());
 });
+
 function displayCartProducts(cartProducts) {
   customersCart.innerHTML = "";
   cartProducts.forEach((product) => {
     customersCart.innerHTML += `
-            <div class="flex list__listProduct" product-id=${product.id}>
-                <img src=${product.image} alt="productImage" class="listProduct__img">
-                <div class="listProduct__details">
-                <p class="details__name">${product.name}</p>
-                <p class="details__price">${product.price}</p>
-                <p class="details__cateogry">${product.category}</p>
-                <p class="details__detail">${product.detail}</p>
-                </div>
-                <button class="listProduct__button deleteFromCart">Delete</button>
-            </div>
-            `;
+      <div class="flex list__listProduct" product-id=${product.id}>
+        <img src=${product.image} alt="productImage" class="listProduct__img">
+        <div class="listProduct__details">
+          <p class="details__name">${product.name}</p>
+          <p class="details__price">${product.price}</p>
+          <p class="details__cateogry">${product.category}</p>
+          <p class="details__detail">${product.detail}</p>
+        </div>
+        <button class="listProduct__button deleteFromCart">Delete</button>
+      </div>`;
   });
   const priceBlock = document.getElementById("price");
-  const price = cartTotalPrice(cartProducts);
+  priceBlock.textContent = `Total price is ${cartTotalPrice(cartProducts)} $`;
   productsDispaly.style.display = "none";
   cartContainer.style.display = "flex";
-  priceBlock.textContent = `Total price is ${price} $`;
   cartDeleteEventLinstener();
 }
-// // ///cartButtonEventLinstener
+
+// Delete product from cart
 function cartDeleteEventLinstener() {
   const cartDelete = document.querySelectorAll(".deleteFromCart");
   cartDelete.forEach((button) => {
@@ -193,102 +206,26 @@ function cartDeleteEventLinstener() {
     });
   });
 }
-// // ////cartDeleteproduct
+
 function cartProductDelete(productId) {
   cartProducts = cartProducts.filter((product) => product.id != productId);
   addToLocalStorage();
   displayCartProducts(cartProducts);
-  //enabling cart adding
-  const productContainer = Array.from(
-    document.querySelectorAll(".products__product")
-  );
-  const product = productContainer.find(
-    (product) => product.getAttribute("product-id") == productId
-  );
-  console.log(product);
-  const idAdd = product.getAttribute("product-id");
-  const icon = product.querySelector("button i.fa-cart-plus");
-  const addButton = icon.closest("button");
-  console.log(productId, idAdd);
-  if (icon && addButton) {
-    if (productId == idAdd) {
-      addButton.disabled = false;
-    }
-  }
 }
 
-// // /////totalPrice
+// Total cart price
 function cartTotalPrice(cartProducts) {
-  let price = 0;
-  cartProducts.forEach((product) => {
-    price = price + Number(product.price);
-  });
-  return price;
+  return cartProducts.reduce(
+    (total, product) => total + Number(product.price),
+    0
+  );
 }
-//cart indisplay
+
+// Back to shopping
 cartIndisplay.addEventListener("click", () => {
   cartContainer.style.display = "none";
   productsDispaly.style.display = "flex";
 });
 
-/////////////////intersecton of filtering
-function performIntersection(
-  cateogries = getProducts(),
-  prices = getProducts()
-) {
-  const intersectionResult = cateogries.filter((cateogryElement) =>
-    prices.some((priceElement) => priceElement.id === cateogryElement.id)
-  );
-  return intersectionResult;
-}
-
-/////filter by cateogry
-filterCateogry.addEventListener("click", cateogryFiltering);
-function cateogryFiltering(cateogry) {
-  getProducts();
-  customersProduct.innerHTML = "";
-  finalCateogry(cateogry.target);
-  console.log("ya");
-  display(performIntersection(cateogriesDisplayed, pricesDisplayed));
-}
-//cateogry value
-function finalCateogry(cateogry) {
-  cateogriesDisplayed = products.filter((product) => {
-    if (cateogry.value === "allCategories") {
-      return products;
-    } else {
-      return product.category.toLowerCase() === cateogry.value.toLowerCase();
-    }
-  });
-  return cateogriesDisplayed;
-}
-
-/////filter by prcice
-filterPrice.addEventListener("change", priceFiltering);
-function priceFiltering(price) {
-  getProducts();
-  customersProduct.innerHTML = " ";
-  pricesDisplayed = finalPrice(price.target);
-  display(performIntersection(cateogriesDisplayed, pricesDisplayed));
-}
-//final price
-function finalPrice(price) {
-  pricesDisplayed = products.filter((product) => {
-    if (price.value === "allPrices") {
-      return products;
-    } else {
-      if (price.value == "low") {
-        return product.price >= 1 && product.price <= 2000;
-      } else if (price.value == "moderate") {
-        return product.price > 2000 && product.price <= 10000;
-      } else {
-        return product.price > 10000;
-      }
-    }
-  });
-  return pricesDisplayed;
-}
-
-// module.exports = {
-//   searchResult
-// };
+// Initialize products when page loads
+initializeProducts();
